@@ -15,6 +15,7 @@ async def send_message(message, user_message, is_private):
 
 def run_discord_bot():
     token = "MTA1MDAyOTQyODQ2MzM3ODQ5Mw.GGQQkr.DR8qlfCrhCJkADH8lUknccJAv9RY18eVkWONy8"
+    BOT_FLAG = '!'
 
     intents = discord.Intents.default()
     intents.message_content = True
@@ -36,8 +37,11 @@ def run_discord_bot():
         print(f"{username} said {user_message} in channel {channel}")
         if user_message[0] == '?':
             await send_message(message, user_message[1:],  is_private=True)
-        else:
+        elif user_message[0] == BOT_FLAG:
             await send_message(message, user_message[1:], is_private=False)
+            print("bot falg working")
+        else:
+            pass
 
 
     client.run(token)
