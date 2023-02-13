@@ -16,7 +16,7 @@ class Bot:
 
         @self.bot.event
         async def on_ready():
-            await responses.setup(self.bot)
+            await setup()
             print(f"{self.bot.user} is now running!")
 
         @self.bot.event
@@ -30,6 +30,9 @@ class Bot:
             channel_id = 1074133871962099732
             channel = self.bot.get_channel(channel_id)
             await channel.send(f"{member} has regained it's connection the outer world")
+
+        async def setup():
+            await responses.setup(self.bot)
 
         self.bot.run(self.token)
 
