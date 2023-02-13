@@ -1,8 +1,21 @@
 import random
+import discord
+from discord.ext import commands
+import bot
 
-def handle_response(message) ->str:
-    message = message.lower()
 
-    if message.startswith("roll"):
-        number = int(message.split()[-1])
-        return random.randint(0, number)
+class Response(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command()
+    async def roll(self, ctx, num: int, times:int):
+        for i in range(0, times):
+            await ctx.send(random.randint(0, num))
+
+
+
+
+
+async def setup(bot):
+    await bot.add_cog(Response(bot))
