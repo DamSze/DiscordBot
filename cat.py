@@ -13,11 +13,11 @@ class Cat(commands.Cog):
     async def cat(self, ctx, limit: int = 1):
         if limit > 10:
             limit = 10
-        for i in range(0,limit):
-            response = requests.get('https://api.thecatapi.com/v1/images/search?limit=' + str(limit) + '&api_key=' + self.key)
-            if response.status_code != 200:
-                await ctx.send("API error, could not get a cat")
-            pic = response.json()[0]['url']
+        response = requests.get('https://api.thecatapi.com/v1/images/search?limit=' + str(limit) + '&api_key=' + self.key)
+        if response.status_code != 200:
+            await ctx.send("API error, could not get a cat")
+        for i in range(0, limit):
+            pic = response.json()[i]['url']
             await ctx.send(pic)
 
 
