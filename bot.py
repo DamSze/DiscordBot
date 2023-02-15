@@ -2,6 +2,7 @@ import os
 import discord
 from discord.ext import commands
 import responses
+import cat
 
 
 class Bot:
@@ -10,7 +11,7 @@ class Bot:
         intents = discord.Intents.default()
         intents.message_content = True
         intents.members = True
-        self.bot = commands.Bot(command_prefix='!', intents=intents)
+        self.bot = commands.Bot(command_prefix='!', intents=intents, case_insensitive=True)
 
     def run_discord_bot(self):
 
@@ -33,6 +34,7 @@ class Bot:
 
         async def setup():
             await responses.setup(self.bot)
+            await cat.setup(self.bot)
 
         self.bot.run(self.token)
 
