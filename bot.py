@@ -1,8 +1,7 @@
-import os
 import discord
 from discord.ext import commands
-import responses
-import cat
+from discord.utils import find
+from cogs import responses, cat
 
 
 class Bot:
@@ -11,9 +10,14 @@ class Bot:
         intents = discord.Intents.default()
         intents.message_content = True
         intents.members = True
-        self.bot = commands.Bot(command_prefix='!', intents=intents, case_insensitive=True)
-
+        self.bot = commands.Bot(command_prefix='!', intents=intents, case_insensitive=True, description='askdhgaskudhgiuahsdgijsadhgjkahs')
     def run_discord_bot(self):
+        @self.bot.event
+        async def on_guild_join(guild):
+            general = find(lambda x: x.name == 'general', guild.text_channels)
+            if general and general.permissions_for(guild.me).send_messages:
+                embed = discord.Embed(title='Hello!', description='Bot made by Mordzio type\n!help to see commands', color=discord.Color.green())
+                await general.send(embed=embed)
 
         @self.bot.event
         async def on_ready():
@@ -27,13 +31,16 @@ class Bot:
         async def on_member_join(member):
             channel_id = 1074133871962099732
             channel = self.bot.get_channel(channel_id)
-            await channel.send(f'{member} has now officially become a loser')
+            embed = discord.Embed(title='New member joined', description=f'{member} has now officially become a loser', color=discord.Color.blue())
+            await channel.send(embed=embed)
 
         @self.bot.event
         async def on_member_remove(member):
             channel_id = 1074133871962099732
             channel = self.bot.get_channel(channel_id)
-            await channel.send(f"{member} has regained it's connection the outer world")
+            embed = discord.Embed(title='User left',description=f"{member} has regained it's connection the outer world", color=discord.Colour.red())
+            await channel.send(embed=embed)
+            print('member removed')
 
         async def setup():
             await responses.setup(self.bot)
