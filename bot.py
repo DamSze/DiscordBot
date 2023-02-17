@@ -17,6 +17,9 @@ class Bot:
 
         @self.bot.event
         async def on_ready():
+            members_count = (self.bot.guilds[0].member_count - 1)
+            status = str(members_count) + (' users' if members_count >1 else ' user')
+            await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=status))
             await setup()
             print(f"{self.bot.user} is now running!")
 
@@ -35,6 +38,7 @@ class Bot:
         async def setup():
             await responses.setup(self.bot)
             await cat.setup(self.bot)
+
 
         self.bot.run(self.token)
 
