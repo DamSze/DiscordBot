@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import find
-from cogs import responses, cat
+from cogs import other, cat, moderate
 
 
 class Bot:
@@ -43,8 +43,9 @@ class Bot:
             print('member removed')
 
         async def setup():
-            await responses.setup(self.bot)
+            await other.setup(self.bot)
             await cat.setup(self.bot)
+            await moderate.setup(self.bot)
 
 
         self.bot.run(self.token)
