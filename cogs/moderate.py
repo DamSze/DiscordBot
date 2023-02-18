@@ -1,9 +1,5 @@
-import random
-import asyncio
 import discord
 from discord.ext import commands
-from discord import app_commands
-import bot
 
 
 class Mod(commands.Cog):
@@ -22,9 +18,12 @@ class Mod(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
+        embed = discord.Embed(title='KICK', description=f'Kicked {member}', color=discord.Color.red())
+        await ctx.send(embed=embed)
 
     @kick.error
     async def kick_error(self, ctx, error):
@@ -36,9 +35,12 @@ class Mod(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
+        embed = discord.Embed(title='BAN', description=f'Banned {member}', color=discord.Color.red())
+        await ctx.send(embed=embed)
 
     @ban.error
     async def ban_error(self, ctx, error):
@@ -49,8 +51,29 @@ class Mod(commands.Cog):
             embed = discord.Embed(description='❌USER NOT FOUND❌', color=discord.Color.red())
             await ctx.send(embed=embed)
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx, *, member):
+        banned_users = [entry async for entry in ctx.guild.bans(limit=2000)]
+        member_name, member_discriminator = member.split('#')
 
+        for ban_entry in banned_users:
+            user = ban_entry.user
 
+            if (user.name, user.discriminator) == (member_name, member_discriminator):
+                await ctx.guild.unban(user)
+                embed = discord.Embed(title='UNBAN', description=f'unbanned {user.name}#{user.discriminator}', color=discord.Color.green())
+                await ctx.send(embed=embed)
+
+    @unban.error
+    async def unban_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(description='❌NO PERMISSION TO UNBAN MEMBERS ❌', color=discord.Color.red())
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(description='❌USER NOT FOUND❌', color=discord.Color.red())
+            await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Mod(bot))
