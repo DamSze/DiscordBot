@@ -17,8 +17,9 @@ class Mod(commands.Cog):
 
     @clr.error
     async def clr_error(self, ctx, error):
-        embed = discord.Embed(description='❌ ERROR NO PERMISSION TO DELETE MESSAGES ❌', color=discord.Color.red())
-        await ctx.send(embed=embed)
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(description='❌ ERROR NO PERMISSION TO DELETE MESSAGES ❌', color=discord.Color.red())
+            await ctx.send(embed=embed)
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
@@ -26,9 +27,13 @@ class Mod(commands.Cog):
         await member.kick(reason=reason)
 
     @kick.error
-    async def clr_error(self, ctx, error):
-        embed = discord.Embed(description='❌NO PERMISSION TO KICK MEMBERS ❌', color=discord.Color.red())
-        await ctx.send(embed=embed)
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            embed = discord.Embed(description='❌NO PERMISSION TO KICK MEMBERS ❌', color=discord.Color.red())
+            await ctx.send(embed=embed)
+        else:
+            embed = discord.Embed(description='❌USER NOT FOUND❌', color=discord.Color.red())
+            await ctx.send(embed=embed)
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -37,12 +42,11 @@ class Mod(commands.Cog):
 
     @ban.error
     async def ban_error(self, ctx, error):
-        print(error)
         if isinstance(error, commands.MissingPermissions):
             embed = discord.Embed(description='❌NO PERMISSION TO BAN MEMBERS ❌', color=discord.Color.red())
             await ctx.send(embed=embed)
         else:
-            embed = discord.Embed(description=f'❌USER NOT FOUND❌', color=discord.Color.red())
+            embed = discord.Embed(description='❌USER NOT FOUND❌', color=discord.Color.red())
             await ctx.send(embed=embed)
 
 
