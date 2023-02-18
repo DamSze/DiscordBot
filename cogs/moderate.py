@@ -10,7 +10,7 @@ class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['clear'])
     @commands.has_permissions(manage_messages=True)
     async def clr(self, ctx, num: int = 1):
         await ctx.channel.purge(limit=num + 1)

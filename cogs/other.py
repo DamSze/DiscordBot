@@ -9,11 +9,6 @@ class Other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def clear(self, ctx, num: int = 1):
-        await ctx.channel.purge(limit=num + 1)
-
-
     @commands.command(aliases=['rol', 'dice'])
     async def roll(self, ctx, num: int, times: int = 1, oneline: bool = False):
         res = []
