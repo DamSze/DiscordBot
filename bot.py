@@ -42,6 +42,16 @@ class Bot:
             await channel.send(embed=embed)
             print('member removed')
 
+        @self.bot.event
+        async def on_command_error(ctx, error):
+            print(error)
+            if isinstance(error, commands.MissingPermissions):
+                embed = discord.Embed(description='❌PERMISSION DENIED❌', color=discord.Color.red())
+                await ctx.send(embed=embed)
+            elif isinstance(error, commands.MemberNotFound):
+                embed = discord.Embed(description='❌USER NOT FOUND❌', color=discord.Color.red())
+                await ctx.send(embed=embed)
+
         async def update_status():
             members_count = (self.bot.guilds[0].member_count - 1)
             status = str(members_count) + (' users' if members_count > 1 else ' user')
