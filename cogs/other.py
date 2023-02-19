@@ -1,11 +1,9 @@
 import random
-import asyncio
 import discord
 from discord.ext import commands
-import bot
 
 
-class Response(commands.Cog):
+class Other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -35,4 +33,4 @@ class Response(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Response(bot))
+    await bot.add_cog(Other(bot))
