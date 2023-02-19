@@ -1,5 +1,6 @@
 import random
 import discord
+import requests
 from discord.ext import commands
 
 
@@ -23,14 +24,14 @@ class Other(commands.Cog):
             embed = discord.Embed(title='Roll 🎲', description=mess, color=discord.Color.purple())
             await ctx.send(embed=embed)
 
-    @roll.error
-    async def missing_argument(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Not enough arguments given")
-
-
-
-
+    @commands.command(aliases=['random_color', 'rgb'])
+    async def color(self, ctx):
+        hex = discord.Color.random()
+        rgb = hex.to_rgb()
+        embed = discord.Embed(color=hex)
+        embed.add_field(name='Hex', value=str(hex))
+        embed.add_field(name='RGB', value=str(rgb)[1:-1])
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Other(bot))
