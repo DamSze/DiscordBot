@@ -1,6 +1,5 @@
 import requests
 import discord
-import json
 from discord.ext import commands
 
 
@@ -15,7 +14,7 @@ class Cat(commands.Cog):
             limit = 10
         response = requests.get('https://api.thecatapi.com/v1/images/search?limit=' + str(limit) + '&api_key=' + self.key)
         if response.status_code != 200:
-            embed = discord.Embed(title='❌ ERROR ❌ ', description="**Can't connect to the API**", color=discord.Color.red())
+            embed = discord.Embed(description="❌Can't connect to the API❌", color=discord.Color.red())
             await ctx.send(embed=embed)
         for i in range(0, limit):
             pic = response.json()[i]['url']
