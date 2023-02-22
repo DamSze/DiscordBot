@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import find
-from cogs import other, cat, moderate
+from cogs import other, cat, moderate, pokemon
 
 
 class Bot:
@@ -11,6 +11,7 @@ class Bot:
         intents.message_content = True
         intents.members = True
         self.bot = commands.Bot(command_prefix='!', intents=intents, case_insensitive=True, description='askdhgaskudhgiuahsdgijsadhgjkahs')
+
     def run_discord_bot(self):
         @self.bot.event
         async def on_guild_join(guild):
@@ -61,6 +62,7 @@ class Bot:
             await other.setup(self.bot)
             await cat.setup(self.bot)
             await moderate.setup(self.bot)
+            await pokemon.setup(self.bot)
 
 
         self.bot.run(self.token)
