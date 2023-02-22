@@ -13,7 +13,7 @@ class Pokemon(commands.Cog):
     @commands.command()
     async def pokemon(self, ctx, name: str=None):
         if name is None:
-            name = random.randint(0, 1279)
+            name = random.randint(0, 898)
         else:
             name = name.lower()
         poke_info = requests.get('https://pokeapi.co/api/v2/pokemon/'+str(name))
