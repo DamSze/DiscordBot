@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 from discord.utils import find
-from const.constants import BOT_KEY, EMOJI
-from cogs import other, cat, moderate, pokemon
+from const.constants import BOT_KEY, EMOJI, BOT_CHAT_ID
+from cogs import other, cat, moderate, pokemon, music
 
 
 class Bot:
@@ -11,6 +11,7 @@ class Bot:
         intents = discord.Intents.default()
         intents.message_content = True
         intents.members = True
+        self.error_emoji = EMOJI["actually"]
         self.bot = commands.Bot(command_prefix='!', intents=intents, case_insensitive=True, description='askdhgaskudhgiuahsdgijsadhgjkahs')
 
     def run_discord_bot(self):
@@ -30,7 +31,7 @@ class Bot:
         @self.bot.event
         async def on_member_join(member):
             await update_status()
-            channel_id = 1074133871962099732
+            channel_id = BOT_CHAT_ID
             channel = self.bot.get_channel(channel_id)
             embed = discord.Embed(title='New member joined', description=f'{member} has now officially become a loser', color=discord.Color.blue())
             await channel.send(embed=embed)
@@ -38,7 +39,7 @@ class Bot:
         @self.bot.event
         async def on_member_remove(member):
             await update_status()
-            channel_id = 1074133871962099732
+            channel_id = BOT_CHAT_ID
             channel = self.bot.get_channel(channel_id)
             embed = discord.Embed(title='User left',description=f"{member} has regained it's connection the outer world", color=discord.Colour.red())
             await channel.send(embed=embed)
@@ -46,12 +47,11 @@ class Bot:
 
         @self.bot.event
         async def on_command_error(ctx, error):
-            error_emoji = EMOJI["actually"]
             if isinstance(error, commands.MissingPermissions):
-                embed = discord.Embed(description=f'{error_emoji}PERMISSION DENIED {error_emoji}', color=discord.Color.red())
+                embed = discord.Embed(description=f'{self.error_emoji}PERMISSION DENIED {self.error_emoji}', color=discord.Color.red())
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.MemberNotFound):
-                embed = discord.Embed(description=f'{error_emoji}USER NOT FOUND {error_emoji}', color=discord.Color.red())
+                embed = discord.Embed(description=f'{self.error_emoji}USER NOT FOUND {self.error_emoji}', color=discord.Color.red())
                 await ctx.send(embed=embed)
 
         async def update_status():
@@ -64,6 +64,7 @@ class Bot:
             await cat.setup(self.bot)
             await moderate.setup(self.bot)
             await pokemon.setup(self.bot)
+            await music.setup(self.bot)
 
 
         self.bot.run(self.token)
