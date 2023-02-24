@@ -1,12 +1,13 @@
 import discord
 from discord.ext import commands
 from discord.utils import find
+from const.constants import BOT_KEY, EMOJI
 from cogs import other, cat, moderate, pokemon
 
 
 class Bot:
     def __init__(self):
-        self.token = "MTA1MDAyOTQyODQ2MzM3ODQ5Mw.GGQQkr.DR8qlfCrhCJkADH8lUknccJAv9RY18eVkWONy8"
+        self.token = BOT_KEY
         intents = discord.Intents.default()
         intents.message_content = True
         intents.members = True
@@ -45,12 +46,12 @@ class Bot:
 
         @self.bot.event
         async def on_command_error(ctx, error):
-            print(error)
+            error_emoji = EMOJI["actually"]
             if isinstance(error, commands.MissingPermissions):
-                embed = discord.Embed(description='❌PERMISSION DENIED❌', color=discord.Color.red())
+                embed = discord.Embed(description=f'{error_emoji}PERMISSION DENIED {error_emoji}', color=discord.Color.red())
                 await ctx.send(embed=embed)
             elif isinstance(error, commands.MemberNotFound):
-                embed = discord.Embed(description='❌USER NOT FOUND❌', color=discord.Color.red())
+                embed = discord.Embed(description=f'{error_emoji}USER NOT FOUND {error_emoji}', color=discord.Color.red())
                 await ctx.send(embed=embed)
 
         async def update_status():

@@ -1,12 +1,13 @@
 import requests
 import discord
+from const.constants import CAT_KEY
 from discord.ext import commands
 
 
 class Cat(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.key = 'live_tv19fCPO2u6LBPa4vYReChLicROoIPfLV2yZOBb7QQvyYM9QPa8KtECgdklZPN58'
+        self.key = CAT_KEY
 
     @commands.command(aliases=['psycha', 'kot'])
     async def cat(self, ctx, limit: int = 1):
