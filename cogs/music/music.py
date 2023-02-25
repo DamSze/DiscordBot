@@ -169,7 +169,7 @@ class Music(commands.Cog):
             embed = discord.Embed(description=f"LOOP OFF {self.error_emoji}", colour=discord.Color.purple())
             await ctx.send(embed=embed)
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=30)
     async def empty_channel(self, ctx):
         if self.vc is not None:
             try:
