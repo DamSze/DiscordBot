@@ -28,12 +28,13 @@ class Music(commands.Cog):
             try:
                 info = ydl.extract_info(f"ytsearch:{item}", download=False)['entries'][0]
                 title = info['title']
+                yt_url = info['webpage_url']
                 info = info['formats']
                 mp4_url = [f for f in info if f.get('audio_ext') != 'none'][1]['url']
             except Exception as e:
                 print(e)
                 return False
-        return {'source': mp4_url, 'title': title}
+        return {'source': mp4_url, 'title': title, 'url': yt_url}
 
     def play_next(self):
         if len(self.music_queue) > 0:
@@ -83,12 +84,8 @@ class Music(commands.Cog):
                 embed = discord.Embed(description=f"{self.error_emoji}CAN'T FIND A SONG TRY DIFFERENT KEYWORD{self.error_emoji}", colour=discord.Color.red())
                 await ctx.send(embed=embed)
             else:
-                embed = discord.Embed(description=f"{self.success_emoji}SONG ADDED TO THE QUEUE{self.success_emoji}",colour=discord.Color.green())
-                # BUTTON TEST
-                try:
-                    await ctx.send(embed=embed, view = PlayButton(self, ctx))
-                except Exception as e:
-                    print(e)
+                embed = discord.Embed(description=f"{self.success_emoji} SONG ADDED TO THE QUEUE {self.success_emoji}", title=song['title'], url=song['url'], colour=discord.Color.blurple())
+                await ctx.send(embed=embed, view = PlayButton(self, ctx))
                 self.music_queue.append([song, voice_channel])
 
                 if not self.is_playing:
