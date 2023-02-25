@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 from discord.utils import find
 from const.constants import BOT_KEY, EMOJI, BOT_CHAT_ID
-from cogs import other, cat, moderate, pokemon, music
+from cogs import other, cat, moderate, pokemon
+from cogs.music import music
 
 
 class Bot:

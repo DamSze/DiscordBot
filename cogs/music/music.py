@@ -2,6 +2,8 @@ import discord
 from const.constants import EMOJI
 from discord.ext import commands, tasks
 from yt_dlp import YoutubeDL
+from cogs.music.buttons import PlayButton
+
 
 class Music(commands.Cog):
     def __init__(self, bot):
@@ -46,7 +48,6 @@ class Music(commands.Cog):
             self.is_playing = False
 
     async def play_music(self, ctx):
-        print(len(self.music_queue))
         if len(self.music_queue) > 0:
             self.is_playing = True
             m_url = self.music_queue[0][0]['source']
@@ -61,8 +62,8 @@ class Music(commands.Cog):
                     return
             else:
                 await self.vc.move_to(self.music_queue[0][1])
-            if not self.skipped or self.loop is not True:
-                print('PLAY_MUSIC FUNCTION POP')
+            if not self.skipped and self.loop is not True:
+                print(f"skipped value {self.skipped}")
                 self.music_queue.pop(0)
                 self.skipped = True
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda x: self.play_next())
@@ -83,7 +84,11 @@ class Music(commands.Cog):
                 await ctx.send(embed=embed)
             else:
                 embed = discord.Embed(description=f"{self.success_emoji}SONG ADDED TO THE QUEUE{self.success_emoji}",colour=discord.Color.green())
-                await ctx.send(embed=embed)
+                # BUTTON TEST
+                try:
+                    await ctx.send(embed=embed, view = PlayButton(self, ctx))
+                except Exception as e:
+                    print(e)
                 self.music_queue.append([song, voice_channel])
 
                 if not self.is_playing:
@@ -95,6 +100,7 @@ class Music(commands.Cog):
             self.is_playing = False
             self.is_paused = True
             self.vc.pause()
+
             embed = discord.Embed(description=f"PAUSED {self.play_emoji}", colour=discord.Color.purple())
             await ctx.send(embed=embed)
 
