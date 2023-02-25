@@ -2,7 +2,7 @@ import discord
 from const.constants import EMOJI
 from discord.ext import commands, tasks
 from yt_dlp import YoutubeDL
-from cogs.music.buttons import PlayButton
+from cogs.music.buttons import PlayButton, QueueButton
 
 
 class Music(commands.Cog):
@@ -84,7 +84,7 @@ class Music(commands.Cog):
                 embed = discord.Embed(description=f"{self.error_emoji}CAN'T FIND A SONG TRY DIFFERENT KEYWORD{self.error_emoji}", colour=discord.Color.red())
                 await ctx.send(embed=embed)
             else:
-                embed = discord.Embed(description=f"{self.success_emoji} SONG ADDED TO THE QUEUE {self.success_emoji}", title=song['title'], url=song['url'], colour=discord.Color.blurple())
+                embed = discord.Embed(description=f"{self.success_emoji} SONG ADDED TO THE QUEUE {self.success_emoji}", title=song['title'], url=song['url'], colour=discord.Color.green())
                 await ctx.send(embed=embed, view = PlayButton(self, ctx))
                 self.music_queue.append([song, voice_channel])
 
@@ -128,7 +128,7 @@ class Music(commands.Cog):
                         break
                     queue += f"{str(i+1)}. {self.music_queue[i][0]['title']} {self.success_emoji}\n\n"
                 embed = discord.Embed(title='QUEUE', description=queue, colour=discord.Color.green())
-                await ctx.send(embed=embed)
+                await ctx.send(embed=embed, view=QueueButton(self, ctx))
             else:
                 embed = discord.Embed(description=f"{self.error_emoji}QUEUE IS EMPTY{self.error_emoji}", colour=discord.Color.green())
                 await ctx.send(embed=embed)
