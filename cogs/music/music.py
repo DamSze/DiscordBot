@@ -20,7 +20,8 @@ class Music(commands.Cog):
 
         self.music_queue = []
         self.YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist': 'True'}
-        self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+        self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+                               'options': '-vn'}
         self.vc = None
 
     def search_yt(self, item):
@@ -56,17 +57,18 @@ class Music(commands.Cog):
             if self.vc is None or not self.vc.is_connected():
                 self.vc = await self.music_queue[0][1].connect()
                 # task made to check whether there are any user on the channel
+                print('\n\n\n')
+                print(self.music_queue)
                 self.empty_channel.start(ctx)
                 if self.vc is None:
-                    embed = discord.Embed(description=f"{self.error_emoji}CAN'T CONNECT TO THE VOICE CHANNEL{self.error_emoji}", colour=discord.Color.red())
+                    embed = discord.Embed(description=f"{self.error_emoji}CAN'T CONNECT TO THE VOICE CHANNEL{self.error_emoji}",
+                                          colour=discord.Color.red())
                     await ctx.send(embed=embed)
                     return
             else:
                 await self.vc.move_to(self.music_queue[0][1])
-            if not self.skipped and self.loop is not True:
-                print(f"skipped value {self.skipped}")
+            if not self.loop and not self.skipped:
                 self.music_queue.pop(0)
-                self.skipped = True
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda x: self.play_next())
 
     @commands.command(aliases=['p'])
@@ -75,16 +77,19 @@ class Music(commands.Cog):
 
         voice_channel = ctx.author.voice.channel
         if voice_channel is None:
-            embed = discord.Embed(description=f"{self.error_emoji}CONNECT TO A VOICE CHANNEL{self.error_emoji}", colour=discord.Color.red())
+            embed = discord.Embed(description=f"{self.error_emoji}CONNECT TO A VOICE CHANNEL{self.error_emoji}",
+                                  colour=discord.Color.red())
             await ctx.send(embed=embed)
             return
         else:
             song = self.search_yt(query)
             if type(song) == type(True):
-                embed = discord.Embed(description=f"{self.error_emoji}CAN'T FIND A SONG TRY DIFFERENT KEYWORD{self.error_emoji}", colour=discord.Color.red())
+                embed = discord.Embed(description=f"{self.error_emoji}CAN'T FIND A SONG TRY DIFFERENT KEYWORD{self.error_emoji}",
+                                      colour=discord.Color.red())
                 await ctx.send(embed=embed)
             else:
-                embed = discord.Embed(description=f"{self.success_emoji} SONG ADDED TO THE QUEUE {self.success_emoji}", title=song['title'], url=song['url'], colour=discord.Color.green())
+                embed = discord.Embed(description=f"{self.success_emoji} SONG ADDED TO THE QUEUE {self.success_emoji}",
+                                      title=song['title'], url=song['url'], colour=discord.Color.green())
                 await ctx.send(embed=embed, view = PlayButton(self, ctx))
                 self.music_queue.append([song, voice_channel])
 
@@ -130,7 +135,8 @@ class Music(commands.Cog):
                 embed = discord.Embed(title='QUEUE', description=queue, colour=discord.Color.green())
                 await ctx.send(embed=embed, view=QueueButton(self, ctx))
             else:
-                embed = discord.Embed(description=f"{self.error_emoji}QUEUE IS EMPTY{self.error_emoji}", colour=discord.Color.green())
+                embed = discord.Embed(description=f"{self.error_emoji}QUEUE IS EMPTY{self.error_emoji}",
+                                      colour=discord.Color.green())
                 await ctx.send(embed=embed)
         except Exception as e:
             print(e)
@@ -140,7 +146,8 @@ class Music(commands.Cog):
         if self.is_playing:
             self.vc.stop()
         self.music_queue = []
-        embed = discord.Embed(description=f"{self.success_emoji}QUEUE CLEARED{self.success_emoji}",colour=discord.Color.green())
+        embed = discord.Embed(description=f"{self.success_emoji}QUEUE CLEARED{self.success_emoji}",
+                              colour=discord.Color.green())
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['q', 'leave'])
@@ -152,6 +159,8 @@ class Music(commands.Cog):
             self.is_playing = False
             self.is_paused = False
             self.loop = False
+            self.skipped = False
+            self.vc.stop()
             await self.vc.disconnect()
             self.vc = None
             self.empty_channel.stop()
@@ -176,7 +185,8 @@ class Music(commands.Cog):
                 if len(self.vc.channel.members) <= 1:
                     await self.quit_h()
                     self.empty_channel.stop()
-                    embed = discord.Embed(description=f"{self.running_emoji}NO ONE LEFT IMMA HEAD OUT{self.running_emoji}", colour=discord.Color.blue())
+                    embed = discord.Embed(description=f"{self.running_emoji}NO ONE LEFT IMMA HEAD OUT{self.running_emoji}",
+                                          colour=discord.Color.blue())
                     await ctx.send(embed=embed)
 
             except Exception(IndexError) as e:
