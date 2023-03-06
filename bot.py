@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import find
-from const.constants import BOT_KEY, EMOJI, BOT_CHAT_ID
+from const.constants import BOT_KEY, EMOJI, BOT_CHAT_ID, DEFAULT_ROLE
 from cogs import other, cat, moderate, pokemon
 from cogs.music import music
 
@@ -34,6 +34,7 @@ class Bot:
         async def on_member_join(member):
             await update_status()
             channel_id = BOT_CHAT_ID
+            # await member.add_roles(discord.utils.get(member.guild.roles, name=role)) for role in DEFAULT_ROLE
             # await member.add_roles(discord.utils.get(member.guild.roles, name='Przypadkowi Przechodnie'))
             channel = self.bot.get_channel(channel_id)
             embed = discord.Embed(title='New member joined', description=f'{member} has now officially become a loser',

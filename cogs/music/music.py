@@ -12,6 +12,7 @@ class Music(commands.Cog):
         self.success_emoji = EMOJI["success"]
         self.running_emoji = EMOJI['running']
         self.infinity_emoji = EMOJI['infinity']
+        self.off_emoji = EMOJI['error']
         self.play_emoji = EMOJI['play']
         self.is_playing = False
         self.is_paused = False
@@ -132,7 +133,7 @@ class Music(commands.Cog):
                         queue += f'...[{len(self.music_queue)-8}]...'
                         break
                     queue += f"{str(i+1)}. {self.music_queue[i][0]['title']} {self.success_emoji}\n\n"
-                embed = discord.Embed(title='QUEUE', description=queue, colour=discord.Color.green())
+                embed = discord.Embed(title=f'QUEUE', description=queue, colour=discord.Color.green())
                 await ctx.send(embed=embed, view=QueueButton(self, ctx))
             else:
                 embed = discord.Embed(description=f"{self.error_emoji}QUEUE IS EMPTY{self.error_emoji}",
@@ -152,6 +153,7 @@ class Music(commands.Cog):
 
     @commands.command(aliases=['q', 'leave'])
     async def quit(self, ctx, *args):
+        self.empty_channel.cancel()
         await self.quit_h()
     async def quit_h(self):
         if self.vc is not None:
@@ -162,7 +164,6 @@ class Music(commands.Cog):
             self.is_paused = False
             self.loop = False
             self.skipped = False
-            self.empty_channel.cancel()
             await self.vc.disconnect()
             self.vc = None
             self.empty_channel.stop()
@@ -177,7 +178,7 @@ class Music(commands.Cog):
             await ctx.send(embed=embed)
         else:
             self.loop = False
-            embed = discord.Embed(description=f"LOOP OFF {self.error_emoji}", colour=discord.Color.purple())
+            embed = discord.Embed(description=f"LOOP OFF {self.off_emoji}", colour=discord.Color.purple())
             await ctx.send(embed=embed)
 
     @tasks.loop(seconds=30)
@@ -185,11 +186,11 @@ class Music(commands.Cog):
         if self.vc is not None:
             try:
                 if len(self.vc.channel.members) <= 1:
-                    await self.quit_h()
                     self.empty_channel.stop()
                     embed = discord.Embed(description=f"{self.running_emoji}NO ONE LEFT IMMA HEAD OUT{self.running_emoji}",
                                           colour=discord.Color.blue())
                     await ctx.send(embed=embed)
+                    await self.quit_h()
 
             except Exception(IndexError) as e:
                 print(e)
