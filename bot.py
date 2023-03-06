@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord.utils import find
 from const.constants import BOT_KEY, EMOJI, BOT_CHAT_ID, DEFAULT_ROLE
-from cogs import other, cat, moderate, pokemon
+from cogs import other, cat, moderate, pokemon, gpt
 from cogs.music import music
 
 
@@ -73,6 +73,7 @@ class Bot:
             await moderate.setup(self.bot)
             await pokemon.setup(self.bot)
             await music.setup(self.bot)
+            await gpt.setup(self.bot)
 
 
         self.bot.run(self.token)
