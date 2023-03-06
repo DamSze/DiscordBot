@@ -31,7 +31,7 @@ class Music(commands.Cog):
                 title = info['title']
                 yt_url = info['webpage_url']
                 info = info['formats']
-                mp4_url = [f for f in info if f.get('audio_ext') != 'none'][1]['url']
+                mp4_url = [f for f in info if f.get('audio_ext') != 'none'][0]['url']
             except Exception as e:
                 print(e)
                 return False
@@ -57,8 +57,6 @@ class Music(commands.Cog):
             if self.vc is None or not self.vc.is_connected():
                 self.vc = await self.music_queue[0][1].connect()
                 # task made to check whether there are any user on the channel
-                print('\n\n\n')
-                print(self.music_queue)
                 self.empty_channel.start(ctx)
                 if self.vc is None:
                     embed = discord.Embed(description=f"{self.error_emoji}CAN'T CONNECT TO THE VOICE CHANNEL{self.error_emoji}",
@@ -67,8 +65,10 @@ class Music(commands.Cog):
                     return
             else:
                 await self.vc.move_to(self.music_queue[0][1])
+
             if not self.loop and not self.skipped:
                 self.music_queue.pop(0)
+
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda x: self.play_next())
 
     @commands.command(aliases=['p'])
@@ -155,12 +155,14 @@ class Music(commands.Cog):
         await self.quit_h()
     async def quit_h(self):
         if self.vc is not None:
+            if self.is_playing:
+                self.vc.stop()
             self.music_queue = []
             self.is_playing = False
             self.is_paused = False
             self.loop = False
             self.skipped = False
-            self.vc.stop()
+            self.empty_channel.cancel()
             await self.vc.disconnect()
             self.vc = None
             self.empty_channel.stop()
