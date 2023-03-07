@@ -3,26 +3,48 @@ import discord
 import requests
 from discord.ext import commands
 from bs4 import BeautifulSoup
+from const.constants import EMOJI
 
 
 class Other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.error_emoji = EMOJI['actually']
 
     @commands.command(aliases=['rol', 'dice'])
     async def roll(self, ctx, num: int, times: int = 1, oneline: bool = False):
+        print(str(num))
+
+        if times <= 0 or num <= 0:
+            raise commands.BadArgument('ARGUMENT CANNOT BE <=0')
+            return
+
+        elif num > 1000000:
+            raise commands.BadArgument('MAX ROLL CAN BE UP TO 1 MILLION')
+            return
+
+        elif times > 100:
+            raise commands.BadArgument('MAX NUMBER OF ROLLS CAN BE UP TO 100')
+            return
+
         res = []
-        mess=''
+        mess = ''
         for i in range(0, times):
             rand_val = random.randint(0, num)
-            res.append(rand_val)
+            res.append(rand_val+1)
         if oneline:
             embed = discord.Embed(title='Roll 🎲', description=res, color=discord.Color.purple())
-            await ctx.send(embed=embed)
         else:
             for num in res:
                 mess = mess + str(num) + '\n'
             embed = discord.Embed(title='Roll 🎲', description=mess, color=discord.Color.purple())
+        await ctx.send(embed=embed)
+
+    @roll.error
+    async def roll_error(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            embed = discord.Embed(description=f'{self.error_emoji} {error} {self.error_emoji}',
+                                  color=discord.Color.red())
             await ctx.send(embed=embed)
 
     @commands.command(aliases=['random_color', 'rgb'])
