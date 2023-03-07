@@ -14,9 +14,11 @@ class Cat(commands.Cog):
     async def cat(self, ctx, limit: int = 1):
         if limit > 10:
             limit = 10
-        response = requests.get('https://api.thecatapi.com/v1/images/search?limit=' + str(limit) + '&api_key=' + self.key)
+        response = requests.get('https://api.thecatapi.com/v1/images/search?limit=' + str(limit)
+                                + '&api_key=' + self.key)
         if response.status_code != 200:
-            embed = discord.Embed(description=f"{self.error_emoji}Can't connect to the API{self.error_emoji}", color=discord.Color.red())
+            embed = discord.Embed(description=f"{self.error_emoji}Can't connect to the API{self.error_emoji}",
+                                  color=discord.Color.red())
             await ctx.send(embed=embed)
         for i in range(0, limit):
             pic = response.json()[i]['url']
