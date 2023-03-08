@@ -7,19 +7,6 @@
 
 <h4 align="center">Discord bot made using python language for day to day use.</h4>
 
-<p align="center">
-  <a href="https://badge.fury.io/js/electron-markdownify">
-    <img src="https://badge.fury.io/js/electron-markdownify.svg"
-         alt="Gitter">
-  </a>
-  <a href="https://gitter.im/amitmerchant1990/electron-markdownify"><img src="https://badges.gitter.im/amitmerchant1990/electron-markdownify.svg"></a>
-  <a href="https://saythanks.io/to/bullredeyes@gmail.com">
-      <img src="https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg">
-  </a>
-  <a href="https://www.paypal.me/AmitMerchant">
-    <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
-  </a>
-</p>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -30,14 +17,13 @@
   <a href="#license">License</a>
 </p>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif)
 
 ## Key Features
 
 * Music 
   - functionalities that allow you to play music on your server (skip, loop, queue)
-* Sync Scrolling
-  - While you type, LivePreview will automatically scroll to the current location you're editing.
+* Cat
+  - allows you to print cat images using <a href="https://thecatapi.com/">Thecatapi</a>
 * GitHub Flavored Markdown  
 * Syntax highlighting
 * [KaTeX](https://khan.github.io/KaTeX/) Support
