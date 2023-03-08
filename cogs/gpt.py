@@ -27,7 +27,6 @@ class Gpt(commands.Cog):
             presence_penalty=0,
         )
         embed = discord.Embed(description=response['choices'][0]['text'].strip(), color = discord.Color.green())
-        print(response)
         await ctx.send(embed=embed)
 
     @commands.command(aliases=['image', 'Aiimage', 'imageAi', 'picture'])
