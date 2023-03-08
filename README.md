@@ -21,17 +21,15 @@
 ## Key Features
 
 * Music 
-  - functionalities that allow you to play music on your server:
-	- skip
-	- resume
-	- pause
-	- queue
-	- loop
-	- clearing queue
+  - skip
+  - resume
+  - pause
+  - queue
+  - loop
+  - clearing queue
 * Open ai tools
   - prints image from text message using dalle
   - responds to a text prompt using text-davinci-003 engine
-* 
 * Cat
   - allows you to print cat images using <a href="https://thecatapi.com/">Thecatapi</a>
 * Moderation
