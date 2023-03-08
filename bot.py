@@ -51,7 +51,6 @@ class Bot:
             embed = discord.Embed(title='User left',description=f"{member} has regained it's connection the outer world",
                                   color=discord.Colour.red())
             await channel.send(embed=embed)
-            print('member removed')
 
         @self.bot.event
         async def on_command_error(ctx, error):
