@@ -30,4 +30,4 @@
 * Movie
   - gives random movie from <a href="https://www.imdb.com/chart/top/">top 250 imbd rated film</a>
 * Roll
-  - "roll" dice
+  - "roll" a dice
