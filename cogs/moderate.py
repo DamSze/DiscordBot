@@ -1,36 +1,42 @@
 import discord
 from discord.ext import commands
-
+from discord.ext.commands import parameter as param
 
 class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['clear'])
+    @commands.command(aliases=['clear'], brief="clear messages", help='clear messages from chat \n\n'
+                                                                            'Usage: !clr [num]\n')
     @commands.has_permissions(manage_messages=True)
-    async def clr(self, ctx, num: int = 1):
+    async def clr(self, ctx, num: int = param(default=1, description='(optional): number of messages to delete')):
         await ctx.channel.purge(limit=num + 1)
 
-    @commands.command()
+    @commands.command(brief="kick member", help='kick member \n\n'
+                                                'Usage: !kick [member] [reason]\n')
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx, member: discord.Member = param(description='(mandatory): member to be deleted'),
+                   *, reason=param(default=None, description='(optional): reason of kick')):
         await member.kick(reason=reason)
         embed = discord.Embed(title='KICK', description=f'Kicked {member}', color=discord.Color.red())
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(brief="ban member", help='ban member \n\n'
+                                                'Usage: !ban [member] [reason]\n')
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: discord.Member, *, reason=None):
+    async def ban(self, ctx, member: discord.Member = param(description='(mandatory): member to be banned'),
+                    *, reason=param(default=None, description='(optional): reason of ban')):
         await member.ban(reason=reason)
         embed = discord.Embed(title='BAN', description=f'Banned {member}', color=discord.Color.red())
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(brief="unban member", help='unban member \n\n'
+                                                 'Usage: !unban [member]\nExample: !unban Mordzio')
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, *, member):
+    async def unban(self, ctx, *, member = param(description='(mandatory): member to be unbanned(username)')):
         banned_users = [entry async for entry in ctx.guild.bans(limit=2000)]
         member_name, member_discriminator = member.split('#')
 

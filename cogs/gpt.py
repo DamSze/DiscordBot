@@ -3,6 +3,7 @@ import openai
 import requests
 import io
 from discord.ext import commands
+from discord.ext.commands import parameter as param
 from const.constants import OPEN_AI_KEY
 from const.constants import EMOJI
 
@@ -14,7 +15,8 @@ class Gpt(commands.Cog):
         self.error_emoji = EMOJI['actually']
         openai.api_key = self.key
 
-    @commands.command()
+    @commands.command(brief="AI response", help='response from GPT-3 to a given prompt \n\n'
+                                                'Usage: !gpt [prompt]\nExample: !gpt highest mountain in Poland\n')
     async def gpt(self, ctx, *args):
         prompt = " ".join(args)
         response = openai.Completion.create(
@@ -29,7 +31,9 @@ class Gpt(commands.Cog):
         embed = discord.Embed(description=response['choices'][0]['text'].strip(), color = discord.Color.green())
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['image', 'Aiimage', 'imageAi', 'picture'])
+    @commands.command(aliases=['image', 'Aiimage', 'imageAi', 'picture'], brief="AI image generator",
+                      help='image response from DALL-E to a given prompt \n\n'
+                           'Usage: !image [param]\nExample: !image spider-man\n')
     async def gptimage(self, ctx, *args):
         prompt = " ".join(args)
         embed = discord.Embed(description="WAIT FOR YOUR IMAGES",

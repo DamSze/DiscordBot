@@ -2,6 +2,7 @@ import requests
 import discord
 from const.constants import CAT_KEY, EMOJI
 from discord.ext import commands
+from discord.ext.commands import parameter as param
 
 
 class Cat(commands.Cog):
@@ -10,8 +11,9 @@ class Cat(commands.Cog):
         self.key = CAT_KEY
         self.error_emoji = EMOJI['actually']
 
-    @commands.command(aliases=['psycha', 'kot'])
-    async def cat(self, ctx, limit: int = 1):
+    @commands.command(aliases=['psycha', 'kot'], brief='cat pictures', help='Returns pictures of cute cats.\n\n'
+                                                                            'Usage: !cat [limit]\n')
+    async def cat(self, ctx, limit: int = param(default=1, description="(optional): number of cat pictures")):
         if limit > 10:
             limit = 10
         response = requests.get('https://api.thecatapi.com/v1/images/search?limit=' + str(limit)
