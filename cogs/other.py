@@ -4,17 +4,18 @@ import requests
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from const.constants import EMOJI
-
+from discord.ext.commands import parameter as param
 
 class Other(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.error_emoji = EMOJI['actually']
 
-    @commands.command(aliases=['rol', 'dice'])
-    async def roll(self, ctx, num: int, times: int = 1, oneline: bool = False):
-        print(str(num))
-
+    @commands.command(aliases=['rol', 'dice'], brief='rolling custom dice', help='returns random number in range.\n\n'
+                                                                            'Usage: !roll [num] [times] [True/False]\n')
+    async def roll(self, ctx, num: int = param(description="(mandatory): roll range (0,num)"),
+                   times: int = param(default=1, description='(optional): number of rolls'),
+                   oneline: bool = param(default=False, description='(optional): if True writes result in one line')):
         if times <= 0 or num <= 0:
             raise commands.BadArgument('ARGUMENT CANNOT BE <=0')
             return
