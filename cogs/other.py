@@ -58,7 +58,8 @@ class Other(commands.Cog):
         embed.add_field(name='RGB', value=str(rgb)[1:-1])
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['film'])
+    @commands.command(aliases=['film'], brief='random movie', help='returns one of 250 IMBD best rated movies\n\n'
+                                                                            'Usage: !movie\n')
     async def movie(self, ctx):
         response = requests.get('https://www.imdb.com/chart/top/')
         html = response.text
