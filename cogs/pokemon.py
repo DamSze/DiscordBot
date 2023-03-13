@@ -2,14 +2,15 @@ import requests
 import discord
 import random
 from discord.ext import commands
-
+from discord.ext.commands import parameter as param
 
 class Pokemon(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def pokemon(self, ctx, name: str=None):
+    @commands.command(brief="info about pokemon", help='Information about pokemons, e.g hp, moves, type \n\n'
+                                                 'Usage: !pokemon [name]')
+    async def pokemon(self, ctx, name: str = param(default=None, description='(optional): name of pokemon to be searched')):
         if name is None:
             name = random.randint(0, 898)
         else:
