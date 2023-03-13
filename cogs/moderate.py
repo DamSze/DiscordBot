@@ -16,16 +16,18 @@ class Mod(commands.Cog):
                                                 'Usage: !kick [member] [reason]\n')
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member = param(default=1, description='(mandatory): member to be deleted'),
-                   *, reason= param(default=None, description='(optional): reason of kick')):
+    async def kick(self, ctx, member: discord.Member = param(description='(mandatory): member to be deleted'),
+                   *, reason=param(default=None, description='(optional): reason of kick')):
         await member.kick(reason=reason)
         embed = discord.Embed(title='KICK', description=f'Kicked {member}', color=discord.Color.red())
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(brief="ban member", help='ban member \n\n'
+                                                'Usage: !ban [member] [reason]\n')
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: discord.Member, *, reason=None):
+    async def ban(self, ctx, member: discord.Member = param(description='(mandatory): member to be banned'),
+                    *, reason=param(default=None, description='(optional): reason of ban')):
         await member.ban(reason=reason)
         embed = discord.Embed(title='BAN', description=f'Banned {member}', color=discord.Color.red())
         await ctx.send(embed=embed)
