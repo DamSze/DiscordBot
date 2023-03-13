@@ -12,10 +12,12 @@ class Mod(commands.Cog):
     async def clr(self, ctx, num: int = param(default=1, description='(optional): number of messages to delete')):
         await ctx.channel.purge(limit=num + 1)
 
-    @commands.command()
+    @commands.command(brief="kick member", help='kick member \n\n'
+                                                'Usage: !kick [member] [reason]\n')
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx, member: discord.Member = param(default=1, description='(mandatory): member to be deleted'),
+                   *, reason= param(default=None, description='(optional): reason of kick')):
         await member.kick(reason=reason)
         embed = discord.Embed(title='KICK', description=f'Kicked {member}', color=discord.Color.red())
         await ctx.send(embed=embed)

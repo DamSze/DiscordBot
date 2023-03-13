@@ -11,7 +11,7 @@ class Other(commands.Cog):
         self.bot = bot
         self.error_emoji = EMOJI['actually']
 
-    @commands.command(aliases=['rol', 'dice'], brief='rolling custom dice', help='returns random number in range.\n\n'
+    @commands.command(aliases=['rol', 'dice'], brief='roll custom dice', help='returns random number in range.\n\n'
                                                                             'Usage: !roll [num] [times] [True/False]\n')
     async def roll(self, ctx, num: int = param(description="(mandatory): roll range (0,num)"),
                    times: int = param(default=1, description='(optional): number of rolls'),
@@ -48,7 +48,7 @@ class Other(commands.Cog):
                                   color=discord.Color.red())
             await ctx.send(embed=embed)
 
-    @commands.command(aliases=['random_color', 'rgb'], brief='random color', help='returns random color in viusal, hex and rgb form\n\n'
+    @commands.command(aliases=['random_color', 'rgb'], brief='random color', help='return random color in viusal, hex and rgb form\n\n'
                                                                             'Usage: !color\n')
     async def color(self, ctx):
         hex = discord.Color.random()
