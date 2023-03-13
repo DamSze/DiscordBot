@@ -48,7 +48,8 @@ class Other(commands.Cog):
                                   color=discord.Color.red())
             await ctx.send(embed=embed)
 
-    @commands.command(aliases=['random_color', 'rgb'])
+    @commands.command(aliases=['random_color', 'rgb'], brief='random color', help='returns random color in viusal, hex and rgb form\n\n'
+                                                                            'Usage: !color\n')
     async def color(self, ctx):
         hex = discord.Color.random()
         rgb = hex.to_rgb()
