@@ -32,10 +32,11 @@ class Mod(commands.Cog):
         embed = discord.Embed(title='BAN', description=f'Banned {member}', color=discord.Color.red())
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(brief="unban member", help='unban member \n\n'
+                                                 'Usage: !unban [member]\nExample: !unban Mordzio')
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, *, member):
+    async def unban(self, ctx, *, member = param(description='(mandatory): member to be unbanned(username)')):
         banned_users = [entry async for entry in ctx.guild.bans(limit=2000)]
         member_name, member_discriminator = member.split('#')
 
