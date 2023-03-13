@@ -1,14 +1,15 @@
 import discord
 from discord.ext import commands
-
+from discord.ext.commands import parameter as param
 
 class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=['clear'])
+    @commands.command(aliases=['clear'], brief="clear messages", help='clear messages from chat \n\n'
+                                                                            'Usage: !clr [num]\n')
     @commands.has_permissions(manage_messages=True)
-    async def clr(self, ctx, num: int = 1):
+    async def clr(self, ctx, num: int = param(default=1, description='(optional): number of messages to delete')):
         await ctx.channel.purge(limit=num + 1)
 
     @commands.command()
