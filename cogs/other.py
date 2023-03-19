@@ -31,8 +31,8 @@ class Other(commands.Cog):
         res = []
         mess = ''
         for i in range(0, times):
-            rand_val = random.randint(0, num)
-            res.append(rand_val+1)
+            rand_val = random.randint(1, num)
+            res.append(rand_val)
         if oneline:
             embed = discord.Embed(title='Roll 🎲', description=res, color=discord.Color.purple())
         else:
