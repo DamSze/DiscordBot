@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import parameter as param
 
+
 class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
